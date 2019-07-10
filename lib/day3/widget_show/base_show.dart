@@ -16,7 +16,6 @@ var imgContainer = Container(
 
 
 
-
 var fitMode = [BoxFit.none, BoxFit.contain, BoxFit.cover,
   BoxFit.fill, BoxFit.fitHeight, BoxFit.fitWidth, BoxFit.scaleDown
 ];
