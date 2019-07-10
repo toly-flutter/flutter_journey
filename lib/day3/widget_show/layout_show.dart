@@ -77,23 +77,23 @@ class MarginFlowDelegate extends FlowDelegate {
   MarginFlowDelegate(this._margin); //构造函数
   @override //绘制孩子的方法
   void paintChildren(FlowPaintingContext context) {
-//    var offsetX = _margin.left;
-//    var offsetY = _margin.top;
-//    for (int i = 0; i < context.childCount; i++) {
-//      var w = context.getChildSize(i).width + offsetX + _margin.right;
-//      if (w < context.size.width) {
-//        context.paintChild(i,
-//            transform: Matrix4.translationValues(offsetX, offsetY, 0.0));
-//        offsetX = w + _margin.left;
-//      } else {
-//        offsetX = _margin.left;
-//        offsetY +=
-//            context.getChildSize(i).height + _margin.top + _margin.bottom;
-//        context.paintChild(i,
-//            transform: Matrix4.translationValues(offsetX, offsetY, 0.0));
-//        offsetX += context.getChildSize(i).width + _margin.left + _margin.right;
-//      }
-//    }
+    var offsetX = _margin.left;
+    var offsetY = _margin.top;
+    for (int i = 0; i < context.childCount; i++) {
+      var w = context.getChildSize(i).width + offsetX + _margin.right;
+      if (w < context.size.width) {
+        context.paintChild(i,
+            transform: Matrix4.translationValues(offsetX, offsetY, 0.0));
+        offsetX = w + _margin.left;
+      } else {
+        offsetX = _margin.left;
+        offsetY +=
+            context.getChildSize(i).height + _margin.top + _margin.bottom;
+        context.paintChild(i,
+            transform: Matrix4.translationValues(offsetX, offsetY, 0.0));
+        offsetX += context.getChildSize(i).width + _margin.left + _margin.right;
+      }
+    }
   }
 
   @override

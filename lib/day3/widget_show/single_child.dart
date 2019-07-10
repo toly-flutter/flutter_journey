@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-////[Container] -----------------
+///[Container] -----------------
 var container = Container(
   //容器组件
   color: Colors.lightBlueAccent,
@@ -33,9 +33,9 @@ var card = Card(
 
 ///[SingleChildRenderObjectWidget]  一族  --------------------------
 ///
-/// 1. [Align] -----------------
+/// 1. [Align] ------------------------------------
 ///
-///Align 基础测试
+///Align 基础测试----
 alignBase(){
   var childBox = Container(//孩子组件
     width: 40,
@@ -56,7 +56,8 @@ alignBase(){
   );
   return fatherBox;
 }
-///Align widthFactor测试
+
+///Align widthFactor测试----
 alignFactorTest(){
   var childBox = Container(
     //孩子组件
@@ -140,7 +141,7 @@ formAlignments({double childWidth = 40, double fatherWidth = 110}) {
 }
 
 
-///2.[Center]----------------
+///2.[Center]-----------------------------------------
 
 centerBase(){
   var childBox = Container(//孩子组件
@@ -149,7 +150,7 @@ centerBase(){
     color: Colors.cyanAccent,
   );
 
-  var align = Center(//布局组件Align
+  var align = Center(//布局组件Center
     child: childBox,
   );
 
@@ -161,10 +162,120 @@ centerBase(){
   );
   return fatherBox;
 }
-var show = centerBase();
 
-/// 1. [SizedBox] -----------------
+
+///3.[Padding]-----------------------------------------
+paddingBase(){
+  var childBox = Container(//孩子组件
+    width: 40,
+    height: 40,
+    color: Colors.cyanAccent,
+  );
+
+  var padding = Padding(//布局组件Padding
+    child: childBox,
+    padding: EdgeInsets.all(10),
+  );
+
+  var fatherBox = Container(//父亲组件
+    width: 110,
+    height: 68,
+    color: Colors.grey,
+    child: padding,
+  );
+  return fatherBox;
+}
+
+
+
+///4.[Padding]-----------------------------------------
+offStageBase(){
+  var childBox = Container(//孩子组件
+    width: 40,
+    height: 40,
+    color: Colors.cyanAccent,
+  );
+
+  var offstage = Offstage(//布局组件Offstage
+    child: childBox,
+    offstage: false,
+  );
+
+  var fatherBox = Container(//父亲组件
+    padding:EdgeInsets.all(10) ,
+    width: 110,
+    height: 68,
+    color: Colors.grey,
+    child: offstage,
+  );
+  return fatherBox;
+}
+///5.[Baseline]-----------------------------------------
+baselineBase(){
+  var childBox = Text(//孩子组件
+    'Toly',
+    style: TextStyle(fontSize: 30),
+  );
+
+  var baseline = Baseline(//布局组件Baseline
+    child: childBox,
+    baseline: 68,
+    baselineType: TextBaseline.alphabetic,
+
+  );
+
+  var fatherBox = Container(//父亲组件
+    width: 110,
+    height: 68,
+    color: Colors.grey,
+    child: baseline,
+  );
+  return fatherBox;
+}
+
+///5.[Transform]-----------------------------------------
+transformBase(){
+  var childBox = Container(//孩子组件
+    color: Colors.cyanAccent,
+  );
+
+  var transform = Transform(//布局组件Transform
+    child: childBox,
+    transform: Matrix4.skew(0.5, 0.3),
+
+  );
+
+  var fatherBox = Container(//父亲组件
+    width: 110,
+    height: 68,
+    color: Colors.grey,
+    child: transform,
+  );
+  return fatherBox;
+}
+
+
+
+/// 3.1. [SizedBox] -----------------
 ///
+sizedBoxBase(){
+  var childBox = Container(//孩子组件
+    width: 40,
+    height: 40,
+    color: Colors.cyanAccent,
+  );
+
+  var sizedBox = SizedBox(//布局组件SizedBox
+    child: childBox,
+    height: 100,
+    width: 100,
+  );
+
+  return sizedBox;
+}
+
+var show = sizedBoxBase();
+
 var child1 = Container(
   width: 100.0,
   height: 100.0,
