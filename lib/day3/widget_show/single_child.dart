@@ -1,35 +1,5 @@
 import 'package:flutter/material.dart';
 
-///[Container] -----------------
-var container = Container(
-  //容器组件
-  color: Colors.lightBlueAccent,
-  //容器的颜色
-  width: 150,
-  //容器宽
-  height: 100,
-  //容器高
-  child: Text("Container"),
-  //容器内部组件
-  padding: EdgeInsets.all(20),
-  //内边距
-  margin: EdgeInsets.fromLTRB(5, 10, 15, 20), //外边距
-);
-
-////[Card] -----------------
-var card = Card(
-  //卡片组件
-  elevation: 10,
-  //阴影深度
-  color: Color(0xffffffff),
-  //卡片颜色
-  child: container,
-  //卡片内部组件
-  margin: EdgeInsets.only(left: 40, top: 20),
-  //外边距
-  shape: CircleBorder(side: BorderSide(color: Colors.blue)),
-  clipBehavior: Clip.hardEdge,
-);
 
 ///[SingleChildRenderObjectWidget]  一族  --------------------------
 ///
@@ -270,23 +240,34 @@ sizedBoxBase(){
     height: 100,
     width: 100,
   );
-
   return sizedBox;
 }
 
-var show = sizedBoxBase();
-
-var child1 = Container(
-  width: 100.0,
-  height: 100.0,
-  color: Colors.cyanAccent,
-  child: Text("0123456789876543210"),
-);
-
-var sizedBox = SizedBox(width: 60.0, height: 60.0, child: child1);
 
 /// 2.[FittedBox] -----------------
 ///
+fittedBoxBase(){
+  var child = Container(//孩子组件
+    width: 50.0,
+    height: 50.0,
+    color: Colors.cyanAccent,
+  );
+
+  var fittedBox = FittedBox(//布局组件FittedBox
+    fit: BoxFit.contain,
+    alignment: Alignment.center,
+    child: child,
+  );
+
+  var father = Container(//父亲组件
+    width: 200,
+    height: 100,
+    child: fittedBox,
+    color: Colors.grey,
+  );
+  return father;
+}
+
 var child2 = Container(
   width: 50.0,
   height: 50.0,
@@ -305,6 +286,7 @@ var father2 = Container(
   child: fittedBox,
   color: Colors.grey,
 );
+var show = sizedBoxBase();
 
 /// 3.[AspectRatio] -----------------
 ///
@@ -445,3 +427,35 @@ class CenterChildLayoutDelegate extends SingleChildLayoutDelegate {
   @override
   Size getSize(BoxConstraints constraints) {}
 }
+
+
+///[Container] -----------------
+var container = Container(
+  //容器组件
+  color: Colors.lightBlueAccent,
+  //容器的颜色
+  width: 150,
+  //容器宽
+  height: 100,
+  //容器高
+  child: Text("Container"),
+  //容器内部组件
+  padding: EdgeInsets.all(20),
+  //内边距
+  margin: EdgeInsets.fromLTRB(5, 10, 15, 20), //外边距
+);
+
+////[Card] -----------------
+var card = Card(
+  //卡片组件
+  elevation: 10,
+  //阴影深度
+  color: Color(0xffffffff),
+  //卡片颜色
+  child: container,
+  //卡片内部组件
+  margin: EdgeInsets.only(left: 40, top: 20),
+  //外边距
+  shape: CircleBorder(side: BorderSide(color: Colors.blue)),
+  clipBehavior: Clip.hardEdge,
+);

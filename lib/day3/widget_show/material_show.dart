@@ -157,7 +157,7 @@ class _MaterialShowState extends State<MaterialShow> {
     );
 
 //    var paddingL10 = Padding(
-//      padding: EdgeInsets.only(left: 10),
+//      padding:EdgeInsetsGeometry.md EdgeInsets.only(left: 10),
 //    );
 
     var iconBtn = IconButton(
