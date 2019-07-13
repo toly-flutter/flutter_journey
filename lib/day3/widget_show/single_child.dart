@@ -1,6 +1,39 @@
 import 'package:flutter/material.dart';
 
 
+
+///[Container] -----------------
+var container = Container(
+  //容器组件
+  color: Colors.lightBlueAccent,
+  //容器的颜色
+  width: 150,
+  //容器宽
+  height: 100,
+  //容器高
+  child: Text("Container"),
+  //容器内部组件
+  padding: EdgeInsets.all(20),
+  //内边距
+  margin: EdgeInsets.fromLTRB(5, 10, 15, 20), //外边距
+);
+
+////[Card] -----------------
+var card = Card(
+  //卡片组件
+  elevation: 10,
+  //阴影深度
+  color: Color(0xffffffff),
+  //卡片颜色
+  child: container,
+  //卡片内部组件
+  margin: EdgeInsets.only(left: 40, top: 20),
+  //外边距
+  shape: CircleBorder(side: BorderSide(color: Colors.blue)),
+  clipBehavior: Clip.hardEdge,
+);
+
+
 ///[SingleChildRenderObjectWidget]  一族  --------------------------
 ///
 /// 1. [Align] ------------------------------------
@@ -203,7 +236,7 @@ baselineBase(){
   return fatherBox;
 }
 
-///5.[Transform]-----------------------------------------
+///6.[Transform]-----------------------------------------
 transformBase(){
   var childBox = Container(//孩子组件
     color: Colors.cyanAccent,
@@ -244,7 +277,7 @@ sizedBoxBase(){
 }
 
 
-/// 2.[FittedBox] -----------------
+/// 3.2.[FittedBox] -----------------
 ///
 fittedBoxBase(){
   var child = Container(//孩子组件
@@ -268,41 +301,23 @@ fittedBoxBase(){
   return father;
 }
 
-var child2 = Container(
-  width: 50.0,
-  height: 50.0,
-  color: Colors.cyanAccent,
-);
+/// 3.3.[AspectRatio] -----------------
+aspectRatioBase() {
+  var child = Container( //孩子组件
+    color: Colors.cyanAccent,
+  );
+  var aspectRatio = AspectRatio( //布局组件AspectRatio
+    aspectRatio: 4 / 3,
+    child: child,
+  );
+  var father = Container( //父亲组件
+    width: 200,
+    child: aspectRatio,
+  );
+  return father;
+}
 
-var fittedBox = FittedBox(
-  fit: BoxFit.contain,
-  alignment: Alignment.center,
-  child: child2,
-);
-
-var father2 = Container(
-  width: 200,
-  height: 100,
-  child: fittedBox,
-  color: Colors.grey,
-);
-var show = sizedBoxBase();
-
-/// 3.[AspectRatio] -----------------
-///
-var child3 = Container(
-  color: Colors.cyanAccent,
-);
-var aspectRatio = AspectRatio(
-  aspectRatio: 4 / 3,
-  child: child3,
-);
-var father3 = Container(
-  width: 200,
-  child: aspectRatio,
-);
-
-///4.[ConstrainedBox]-----------------
+///3.4.[ConstrainedBox]-----------------
 ///
 var constrainedBox = ConstrainedBox(
   constraints: const BoxConstraints(
@@ -310,96 +325,139 @@ var constrainedBox = ConstrainedBox(
   child: const Card(child: Text('Hello World!')),
 );
 
-///5.[LimitedBox] -----------------
-///
-var child5 = Container(
-  color: Colors.cyanAccent,
-);
-var limitedBox = LimitedBox(maxWidth: 50, maxHeight: 50, child: child5);
 
-var limitedBoxTest = Column(
-  children: <Widget>[limitedBox],
-);
+/// 3.5.[LimitedBox] -----------------
+limitedBoxBase() {
+  var child = Container( //孩子组件
+    color: Colors.cyanAccent,
+  );
+  //布局组件LimitedBox
+  var limitedBox = LimitedBox(maxWidth: 50, maxHeight: 50, child: child);
 
-///6.[OverflowBox]
-var child6 = Container(
-  //孩子
-  color: Color(0x88FF0000), //这里将孩子透明度变为一半
-  width: 300.0,
-  height: 300.0,
-);
+  var father = Column( //父亲组件
+    children: <Widget>[limitedBox],
+  );
+  return father;
+}
 
-var overflowBox = OverflowBox(
-  alignment: Alignment.topLeft,
-  maxWidth: 200.0,
-  maxHeight: 150.0,
-  child: child6,
-);
+///3.6.[OverflowBox] -----------------
+overflowBoxBase() {
+  var child = Container( //孩子
+    color: Color(0x88FF0000), //这里将孩子透明度变为一半
+    width: 300.0,
+    height: 300.0,
+  );
 
-var father6 = Container(
+  var overflowBox = OverflowBox(//布局组件OverflowBox
+    alignment: Alignment.topLeft,
+    maxWidth: 200.0,
+    maxHeight: 150.0,
+    child: child,
+  );
+
+  var father = Container(
     //父亲
-    color: Colors.black,
-    width: 100.0,
+      color: Colors.black,
+      width: 100.0,
+      height: 100.0,
+      child: overflowBox);
+  return father;
+}
+
+
+///7.[SizedOverflowBox]-----------------
+sizedOverflowBoxBase() {
+  var child = Container(
+    //孩子
+    color: Color(0x88FF0000), //这里将孩子透明度变为一半
+    width: 50.0,
     height: 100.0,
-    child: overflowBox);
+  );
 
-///7.[SizedOverflowBox]
-var child7 = Container(
-  //孩子
-  color: Color(0x88FF0000), //这里将孩子透明度变为一半
-  width: 50.0,
-  height: 100.0,
-);
-
-var sizedOverflowBox = SizedOverflowBox(
-  alignment: Alignment.bottomRight,
-  size: Size(50, 100),
-  child: child2,
-);
-
-var father7 = Container(
-    //父亲
-    color: Colors.grey,
+  //布局组件SizedOverflowBox
+  var sizedOverflowBox = SizedOverflowBox(
     alignment: Alignment.bottomRight,
-    width: 100.0,
-    height: 100.0,
-    child: sizedOverflowBox);
+    size: Size(50, 100),
+    child: child,
+  );
+
+  var father = Container(
+    //父亲
+      color: Colors.grey,
+      alignment: Alignment.bottomRight,
+      width: 100.0,
+      height: 100.0,
+      child: sizedOverflowBox);
+  return father;
+}
+
 
 ///8.[FractionallySizedBox]----
-var child8 = Container(
-  //孩子
-  color: Color(0x88FF0000), //这里将孩子透明度变为一半
-);
+fractionallySizedBoxBase() {
+  var child = Container(
+    //孩子
+    color: Color(0x88FF0000), //这里将孩子透明度变为一半
+  );
 
-var fractionallySizedBox = FractionallySizedBox(
-    alignment: Alignment.topLeft,
-    widthFactor: 1.5,
-    heightFactor: 0.5,
-    child: child3);
+  //布局组件FractionallySizedBox
+  var fractionallySizedBox = FractionallySizedBox(
+      alignment: Alignment.topLeft,
+      widthFactor: 1.5,
+      heightFactor: 0.5,
+      child: child);
 
-var father8 = Container(
+
+  var father = Container(
     //父亲
-    color: Colors.grey,
-    alignment: Alignment.bottomRight,
-    width: 200.0,
-    height: 100.0,
-    child: fractionallySizedBox);
+      color: Colors.grey,
+      alignment: Alignment.bottomRight,
+      width: 200.0,
+      height: 100.0,
+      child: fractionallySizedBox);
+  return father;
+}
 
-///9.[IntrinsicWidth] 和 [IntrinsicHeight]
-var child9 = Column(
-  crossAxisAlignment: CrossAxisAlignment.stretch,
-  children: <Widget>[
-    Container(
-      width: 100,
-      height: 100,
-      color: Colors.cyanAccent,
-    )
-  ],
-);
 
-var intrinsicWidth = IntrinsicWidth(
-  child: child9,
-);
+///9.[IntrinsicWidth] 和 [IntrinsicHeight] ------
+///
+intrinsicWidthBase() {
+  var child = Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: <Widget>[
+      Container(
+        width: 100,
+        height: 100,
+        color: Colors.cyanAccent,
+      )
+    ],
+  );
+  //布局组件IntrinsicWidth
+  var intrinsicWidth = IntrinsicWidth(
+    child: child,
+  );
+  return intrinsicWidth;
+}
+
+intrinsicHeightBase() {
+  var child = Row(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: <Widget>[
+      Container(
+        width: 100,
+        height: 100,
+        color: Colors.cyanAccent,
+      )
+    ],
+  );
+  //布局组件IntrinsicWidth
+  var intrinsicHeight = IntrinsicHeight(
+    child: child,
+  );
+  return intrinsicHeight;
+}
+
+
+var show = intrinsicHeightBase();
 
 ///10.[CustomSingleChildLayout]
 var customSingleChildLayout = CustomSingleChildLayout(
@@ -429,33 +487,3 @@ class CenterChildLayoutDelegate extends SingleChildLayoutDelegate {
 }
 
 
-///[Container] -----------------
-var container = Container(
-  //容器组件
-  color: Colors.lightBlueAccent,
-  //容器的颜色
-  width: 150,
-  //容器宽
-  height: 100,
-  //容器高
-  child: Text("Container"),
-  //容器内部组件
-  padding: EdgeInsets.all(20),
-  //内边距
-  margin: EdgeInsets.fromLTRB(5, 10, 15, 20), //外边距
-);
-
-////[Card] -----------------
-var card = Card(
-  //卡片组件
-  elevation: 10,
-  //阴影深度
-  color: Color(0xffffffff),
-  //卡片颜色
-  child: container,
-  //卡片内部组件
-  margin: EdgeInsets.only(left: 40, top: 20),
-  //外边距
-  shape: CircleBorder(side: BorderSide(color: Colors.blue)),
-  clipBehavior: Clip.hardEdge,
-);

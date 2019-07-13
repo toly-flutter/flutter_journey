@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+var show = MaterialShow();
+
 class MaterialShow extends StatefulWidget {
   MaterialShow({Key key}) : super(key: key);
 
@@ -133,7 +135,8 @@ class _MaterialShowState extends State<MaterialShow> {
 
     var raisedButton = RaisedButton(
       onPressed: () {},
-      child: Text("raised"),
+
+      child: Text("raised", style: TextStyle(fontSize: 12),),
       textColor: Color(0xffFfffff),
       color: Colors.blue,
       highlightColor: Color(0xffF88B0A),
@@ -175,6 +178,7 @@ class _MaterialShowState extends State<MaterialShow> {
     );
 
     var btnBar = ButtonBar(
+
       alignment: MainAxisAlignment.center,
       children: <Widget>[raisedButton, flatButton, outLineButton, iconBtn],
     );
@@ -251,6 +255,18 @@ class _MaterialShowState extends State<MaterialShow> {
 //              print("Flutter之旅");
 //            }));
 
+    var menuInfo = <String>["关于", "帮助", "问题反馈"];
+    var popupMenuButton = PopupMenuButton(
+      itemBuilder: (BuildContext context) {
+        return menuInfo.map((e) {
+          return PopupMenuItem(child: Text(e));
+        }).toList();
+      },
+      onSelected: (i) {
+        print(i);
+      },
+    );
+
     var fab = FloatingActionButton(
       //浮动按钮
       onPressed: () {
@@ -268,6 +284,7 @@ class _MaterialShowState extends State<MaterialShow> {
       appBar: AppBar(
         title: Text('Flutter之旅'),
         bottom: tabBar,
+        actions: <Widget>[popupMenuButton],
       ),
       body: Builder(builder: (context) {
         scfContext = context;

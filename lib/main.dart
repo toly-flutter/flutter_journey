@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_journey/day3/widget_show/single_child.dart';
+
+import 'day3/widget_show/material_show.dart';
+
 
 var scaffold = Scaffold(
   appBar: AppBar(
@@ -13,7 +15,7 @@ var app = MaterialApp(
   theme: ThemeData(
     primarySwatch: Colors.blue,
   ),
-  home: scaffold,
+  home: show,
 );
 
 void main() => runApp(app);
