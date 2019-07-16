@@ -42,6 +42,7 @@ flutter:
 
   assets:
     - images/娜美.jpg
+    - images/white_4X4.png
     - images/lifei.jpeg
     - images/bottom.jpg
     - images/icon_head.png

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'day3/widget_show/material_show.dart';
+import 'package:flutter_journey/day4/anim/run_balls_creater.dart';
+import 'day4/painter/paper.dart';
+
 
 
 var scaffold = Scaffold(
   appBar: AppBar(
     title: Text('Flutter之旅'),
   ),
-  body: show,
+  body: RunBall(),
 );
 
 var app = MaterialApp(
@@ -15,7 +17,7 @@ var app = MaterialApp(
   theme: ThemeData(
     primarySwatch: Colors.blue,
   ),
-  home: show,
+  home: RunBall(),
 );
 
 void main() => runApp(app);

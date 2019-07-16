@@ -16,7 +16,7 @@ class _MaterialShowState extends State<MaterialShow> {
   Widget build(BuildContext context) {
     var scfContext;
 
-    var tabs = ["关注", "推荐", "热榜", "前端", "Android"]; //标题列表
+    var tabs = ["关注", "推荐", "热榜", "前端", "iOS"]; //标题列表
     var tabBar = TabBar(
       //头部标签
       labelStyle: TextStyle(fontSize: 14), //字号
@@ -218,32 +218,29 @@ class _MaterialShowState extends State<MaterialShow> {
       },
     );
 
+    
+    var childInBottomSheet =Wrap(
+      children: <Widget>[
+        Container(
+          child: slider,
+          padding: EdgeInsets.only(top: 10, left: 20),
+          width: 300,
+        ),
+
+        Row(
+            children: widgets,
+            mainAxisAlignment: MainAxisAlignment.center),
+        Container(
+          child: textField,
+          padding: EdgeInsets.fromLTRB(30, 5, 30, 0),
+        ),
+        btnBar,
+      ],
+    );
+    
     var bottomSheet = BottomSheet(
         onClosing: () {},
-        builder: (context) => (Container(
-            color: Color(0x2fb5f6ff),
-            child: Wrap(
-              children: <Widget>[
-                Container(
-                  child: slider,
-                  padding: EdgeInsets.only(top: 10, left: 20),
-                  width: 300,
-                ),
-
-
-                Row(
-                    children: widgets,
-                    mainAxisAlignment: MainAxisAlignment.center),
-
-                Container(
-                  child: textField,
-                  padding: EdgeInsets.fromLTRB(30, 5, 30, 0),
-                ),
-
-                btnBar,
-
-              ],
-            ))));
+        builder: (context) => (Container(color: Color(0xdde3fbf6),child: childInBottomSheet,)));
 
 //    var snackBar = SnackBar(
 //        backgroundColor: Color(0xffFB6431),
