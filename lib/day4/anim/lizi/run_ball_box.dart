@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_journey/common/utils.dart';
 import 'package:flutter_journey/day1/grid_line.dart';
-import 'package:flutter_journey/day4/anim/ball.dart';
+import 'package:flutter_journey/day4/anim/lizi/ball.dart';
 
 class RunBall extends StatefulWidget {
   @override
@@ -59,17 +59,40 @@ class _RunBallState extends State<RunBall> with SingleTickerProviderStateMixin {
     });
   }
 
-  double dx=0.0;
-  void updateBall(){
-    dx+=pi/180;//每次dx增加pi/180
 
-    _ball.x+=cos(dx);
-    _ball.y+=sin(dx);
-  }
+//  更新小球位置
+  void updateBall() {
+    //运动学公式
+    _ball.x += _ball.vX;
+    _ball.y += _ball.vY;
+    _ball.vX += _ball.aX;
+    _ball.vY += _ball.aY;
+    //限定下边界
+    if (_ball.y > _area.bottom - _ball.r) {
+      _ball.y = _area.bottom - _ball.r;
+      _ball.vY = -_ball.vY;
+      _ball.color=randomRGB();//碰撞后随机色
+    }
+    //限定上边界
+    if (_ball.y < _area.top + _ball.r) {
+      _ball.y = _area.top + _ball.r;
+      _ball.vY = -_ball.vY;
+      _ball.color=randomRGB();//碰撞后随机色
+    }
 
-  f(x){
-    var y= 5*sin(4*x);//函数表达式
-    return y;
+    //限定左边界
+    if (_ball.x < _area.left + _ball.r) {
+      _ball.x = _area.left + _ball.r;
+      _ball.vX = -_ball.vX;
+      _ball.color=randomRGB();//碰撞后随机色
+    }
+
+    //限定右边界
+    if (_ball.x > _area.right - _ball.r) {
+      _ball.x = _area.right - _ball.r;
+      _ball.vX= -_ball.vX;
+      _ball.color=randomRGB();//碰撞后随机色
+    }
   }
 }
 

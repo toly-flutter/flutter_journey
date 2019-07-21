@@ -27,15 +27,15 @@ class MultiShower extends StatelessWidget {
           width: width,
           height: height,
           child: call(list[i]));
-      li.add(Column(
+      li.add(Card(elevation: 5,child: Column(
         children: <Widget>[
           child,
-          Text(infos != null ? infos[i] : list[i].toString().split(".")[1])
+         Padding(padding: EdgeInsets.only(bottom: 3),child:Text(infos != null ? infos[i] : list[i].toString().split(".")[1]))
         ],
-      ));
+      )),);
     }
-    return Wrap(
+    return Center(child: Wrap(
       children: li,
-    );
+    ),) ;
   }
 }

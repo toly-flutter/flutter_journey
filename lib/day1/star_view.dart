@@ -44,7 +44,7 @@ class StarView extends CustomPainter {
 Path nStarPath(int num, double R, double r) {
   Path path = new Path();
   double perDeg = 360 / num;
-  double degA = 70;
+  double degA = perDeg / 2 / 2;
   double degB =(360 / (num - 1) - degA)/2 + degA;
 
   path.moveTo(cos(_rad(degA)) * R, (-sin(_rad(degA)) * R));

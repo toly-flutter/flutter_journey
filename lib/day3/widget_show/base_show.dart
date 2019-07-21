@@ -186,3 +186,26 @@ formImgQualitys() {
 var imageQualitys = Wrap(
   children: formImgQualitys(),
 );
+
+rangeSliderTest(){
+
+  var rangeSlider =RangeSlider(
+    values: RangeValues(0, 1),
+    onChanged: (e){
+      print('onChanged:$e');
+    },
+    onChangeStart: (e){
+      print('onChangeStart:$e');
+
+    },
+    onChangeEnd: (e){
+      print('onChangeEnd:$e');
+
+    },
+    divisions: 5,
+  );
+
+  return rangeSlider;
+}
+
+var show=rangeSliderTest();

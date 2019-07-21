@@ -4,7 +4,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_journey/common/utils.dart';
-import 'package:flutter_journey/day4/anim/ball.dart';
+import 'package:flutter_journey/day4/anim/lizi/ball.dart';
 
 class RunBall extends StatefulWidget {
   @override

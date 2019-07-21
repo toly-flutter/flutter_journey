@@ -55,7 +55,24 @@ flutter {
 }
 
 dependencies {
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
+
+//task generationTask() {//自定义一个任务
+//    doFirst {
+//        String root=System.getProperty("user.dir");
+//        new TemplateParser(root+"/generation/config.properties").parserFile(root+"/generation/template/StatefulTemplate.txt")
+//    }
+//}
+
+////--------------------------插件-------------------------------------------
+apply from: "./generation/generation.gradle"
+
+
+//Config {//根据拓展参数来自定义文件夹
+//    root = 'J:\\FileUnit\\file_java\\file'
+//}
+

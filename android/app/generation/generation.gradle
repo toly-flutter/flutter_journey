@@ -1,0 +1,290 @@
+// Create By 张风捷特烈(toly) in 2019.7.17 ---------
+
+apply plugin: TemplateParserPlugin//声明使用插件
+
+//----------------------------以下是插件部分--------------------------------
+class TemplateParserPlugin implements Plugin<Project> {
+    //该接口定义了一个apply()方法，在该方法中，我们可以操作Project，
+    //比如向其中加入Task，定义额外的Property等。
+    void apply(Project project) {
+        //加载Extension
+        project.extensions.create("Config", Extension)
+
+        //使用Extension配置信息
+        project.task('TemplateParser') << {
+            String path = project.Config.root
+            new TemplateParser(path+"config.properties")
+                    .parserFile(path+"template/StatefulTemplate.txt")
+        }
+
+    }
+}
+
+class Extension {//拓展参数
+    String root = System.getProperty("user.dir")+"/generation/"
+}
+
+///----------------- 以下是解析类 -----------------
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class TemplateParser {
+    /**
+     * 默认:$[X],自定义注意\\转义
+     */
+    private String symbol;
+
+    private Properties properties;
+
+    public TemplateParser() {
+        this('\\$\\[X\\]', "config.properties");
+    }
+
+    public TemplateParser( String propFilePath) {
+        this('\\$\\[X\\]',propFilePath);
+    }
+
+    public TemplateParser(String symbol, String propFilePath) {
+        this.symbol = symbol;
+        loadProperties(propFilePath);
+    }
+
+    /**
+     * 载入配置文件
+     * @param path 配置文件路径
+     */
+    private void loadProperties(String path) {
+        properties = new Properties();
+        //读取属性文件a.properties
+        InputStream is = null;
+        try {
+            is = new BufferedInputStream(new FileInputStream(path));
+            properties.load(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (is != null) {
+                    is.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 解析字符串
+     *
+     * @param target 目标字符串
+     * @return 处理后的字符串
+     */
+    public String parser(String target) {
+        String[] symbols = symbol.split("X");
+
+        Map<Integer, String> cutPos = new TreeMap<>();
+        String regex = symbols[0] + ".*?" + symbols[1];
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(target);
+
+        while (matcher.find()) {
+            String matchStr = matcher.group(0);
+            String v = matchStr.split(symbols[0])[1].split(symbols[1])[0]
+            cutPos.put(matcher.end(), v);
+        }
+
+        Iterator<Map.Entry<Integer, String>> iterator = cutPos.entrySet().iterator();
+        String temp;
+        int offset = 0;
+        while (iterator.hasNext()) {
+            Map.Entry<Integer, String> e = iterator.next();
+            int k = e.getKey();
+            String v = e.getValue();
+            String src = '$[' + v + "]";
+            String result = properties.getProperty(v);
+            String substring = target.substring(0, k + offset);
+            temp = substring.replace(src, result);
+            target = target.replace(substring, temp);
+            offset += result.length() - src.length();
+        }
+        return target;
+    }
+
+
+    /**
+     * 根据路径解析所有文件
+     * @param path 路径
+     */
+    public void parserDir(String path) {
+        copyDir(path, path + "-dest");//先拷贝一分
+        _parserDir(new File(path + "-dest"));
+    }
+
+    private void _parserDir(File file) {
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            if (files == null) {
+                return;
+            }
+            for (File f : files) {
+                if (f.isDirectory()) {
+                    parserDir(f);
+                } else {
+                    saveFile(f, parserFile(file));
+                }
+            }
+        } else {
+            parserFile(file);
+        }
+    }
+
+
+    /**
+     * 解析一个文件
+     *
+     * @param path 路径
+     * @return 解析后的字符串
+     */
+    public String parserFile(String path) {
+        File file = new File(path);
+        String result = _parserFile(new File(path));
+        String out = file.getParentFile().getParentFile().getAbsolutePath() + File.separator + "dest" + File.separator + file.getName();
+        saveFile(new File(out), result);
+        return result;
+    }
+
+    /**
+     * 根据文件解析
+     *
+     * @param file 文件
+     * @return 解析后的字符串
+     */
+    private String _parserFile(File file) {
+        InputStream is = null;
+        StringBuilder sb = new StringBuilder();
+        try {
+            is = new FileInputStream(file);
+            int len = 0;
+            byte[] buffer = new byte[1024];
+            while ((len = is.read(buffer)) != -1) {
+                sb.append(new String(buffer, 0, len));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (is != null) {
+                    is.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return parser(sb.toString());
+    }
+
+    //=============================================文件相关操作=============================================
+
+    /**
+     * 保存字符串文件
+     *
+     * @param file    文件
+     * @param content 字符串内容
+     */
+    private void saveFile(File file, String content) {
+        ifNotExistMakeIt(file);
+        FileWriter fw = null;
+
+        try {
+            fw = new FileWriter(file);//写出到磁盘
+            fw.write(content);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (fw != null) {
+                    fw.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    /**
+     * 判断文件是否存在，不存在则创建它
+     *
+     * @param file
+     */
+    private static void ifNotExistMakeIt(File file) {
+        if (file.exists()) {//2.判断文件是否存在
+            return;
+        }
+        File parent = file.getParentFile();//3.获取父文件
+        if (!parent.exists()) {
+            if (!parent.mkdirs()) {//4.创建父文件
+                return;
+            }
+        }
+        try {
+            file.createNewFile();//5.创建文件
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void ifNotExistMakeIt(String path) {
+        File file = new File(path);//1.创建文件
+        ifNotExistMakeIt(file);
+    }
+
+    /**
+     * 复制整个文件夹内容
+     *
+     * @param oldPath String 原文件路径
+     * @param newPath String 复制后路径
+     * @return boolean
+     */
+    private void copyDir(String oldPath, String newPath) {
+        try {
+            (new File(newPath)).mkdirs(); //如果文件夹不存在 则建立新文件夹
+            File a = new File(oldPath);
+            String[] file = a.list();
+            File temp = null;
+            if (file == null) {
+                return;
+            }
+            for (int i = 0; i < file.length; i++) {
+                if (oldPath.endsWith(File.separator)) {
+                    temp = new File(oldPath + file[i]);
+                } else {
+                    temp = new File(oldPath + File.separator + file[i]);
+                }
+                if (temp.isFile()) {
+                    FileInputStream input = new FileInputStream(temp);
+                    FileOutputStream output = new FileOutputStream(newPath + "/" +
+                            (temp.getName()).toString());
+                    byte[] b = new byte[1024 * 5];
+                    int len;
+                    while ((len = input.read(b)) != -1) {
+                        output.write(b, 0, len);
+                    }
+                    output.flush();
+                    output.close();
+                    input.close();
+                }
+                if (temp.isDirectory()) {//如果是子文件夹
+                    copyDir(oldPath + "/" + file[i], newPath + "/" + file[i]);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("复制整个文件夹内容操作出错");
+            e.printStackTrace();
+
+        }
+
+    }
+}
+
