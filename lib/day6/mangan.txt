@@ -1,0 +1,589 @@
+>前面[在Flutter之旅：Dart语法扫尾-包访问-泛型--异常-异步-mixin](https://juejin.im/post/5d20090e5188251a966be7ca)中向大家说过:  
+会有一篇专门介绍Dart中异步的文章,现在如约而至，我将用精致的图文加上生动的例子向你阐述  
+各位，下面一起来看看吧。
+
+---
+
+#### 1.同步
+
+##### 1.1：同步的演示
+
+>程序同步是按顺序执行:一个任务执行完才能进入下一个任务，  
+就像下面的代码，扫地用了15分钟，然后才能烧水，必须等水开了才能洗衣服。  
+
+![](http://user-gold-cdn.xitu.io/2019/7/23/16c1d09f6f769337?w=1156&h=280&f=png&s=51722)
+
+```
+main() {
+  print("A任务: 扫地 15min");
+  print("B任务: 烧水 25min");
+  print("C任务: 洗衣服 25min");
+}
+```
+
+---
+
+##### 1.2:同步的劣势
+>如果把一个人看作劳动力，那么这样执行会减少劳动力的利用率。  
+对于残酷的剥削者而言，这样的工作方式显然是不能让他满意的:  
+完全可以先烧水，开火之后去扫地，扫完地倒垃圾，然后再洗衣服，  
+等到水开了，停下洗衣服的动作，冲完水再去洗衣服，这才是剥削者的思路  
+
+
+![](http://user-gold-cdn.xitu.io/2019/7/23/16c1d1e05cb72895?w=1272&h=408&f=png&s=89221)
+
+---
+
+##### 1.3:关于异步
+>CPU就是那个劳动力，而程序员就是残酷的剥削者。为了让它能卖命的工作，就产生了异步  
+当我们需要连接网络，读取文件，数据库操作等耗时操作，就像在等水烧开  
+你肯定不想一个劳动力傻傻站那等水开吧，所以你要告诉它，现在去洗衣服，水开了再来冲水  
+于是就涉及到了一个问题，我怎么知道谁烧开了呢?这是发生在未来的不确定时间点的事件   
+于是需要搞点东西来标识一下，就像水开了会呜呜响，不然的话，一直洗衣服，还不烧干了?
+
+---
+
+#### 2、从读取文件开始看异步  
+
+##### 2.1:关于Future对象
+>在读取文件的时候，通过File对象的readXXX方法，你会惊奇的发现:  
+没有Sync后缀的方法名都是一个Future对象，它表明该操作返回的是一个未来的对象  
+在未来的对象，现在当然还拿不到,那怎么用呢?可以看到Future有一个than方法
+
+![](http://user-gold-cdn.xitu.io/2019/7/23/16c1d608d3c3701c?w=1200&h=222&f=png&s=115799)
+
+
+
+```
+---->[sky_engine/lib/async/future.dart:601]----
+Future<R> then<R>(FutureOr<R> onValue(T value), {Function onError});
+```
+
+>该方法上注释如下: then方法用来注册将来完成时要调用的回调。  
+当这个future使用一个值完成时，将该值在[onValue]中回调。   
+如果这个future已经完成，那么回调将不会立即调用，而是将在稍后的微任务中调度。  
+另外可以看到一个可选参数onError，当执行错误时会进行错误回调
+
+
+
+---
+
+##### 2.2:使用Future异步读取文件
+>既然知道then中可以传递一个回调来获取文件内容，那就简单了  
+看下图的结果，可以感受到读取文件是异步的，文件读取的代码在上，运行时在下面  
+说明该程序在读取文件这个耗时操作时，先执行后面代码,读取完成后才执行then的回调
+
+
+![](http://user-gold-cdn.xitu.io/2019/7/24/16c22c927459a7b5?w=1490&h=524&f=png&s=124184)
+
+
+```
+import 'dart:io';
+
+main() {
+  var path = '/Volumes/coder/Project/Flutter/flutter_journey/lib/day6/漫感.txt';
+  Future<String> futureStr = File(path).readAsString();
+  futureStr.then((value){
+    print(value);
+  });
+  print("=======看看控制台，我是第在哪里?======");
+}
+```
+
+![](http://user-gold-cdn.xitu.io/2019/7/23/16c1d77b0bb72841?w=886&h=182&f=png&s=42961)
+
+
+---
+
+##### 2.3:使用`async`和`await`异步读取文件
+
+>给一个方法名加上`async`标注，就说明该方法是异步方法，其中可以执行异步操作  
+比如异步读取文件，只需要在Future对象前加上await,即可获取未来的值。
+
+![](http://user-gold-cdn.xitu.io/2019/7/23/16c1d93e7dc3310f?w=1420&h=462&f=png&s=92486)
+
+
+```
+import 'dart:io';
+
+main() {
+  readByAsync();
+  print("=======看看控制台，我是第在哪里?======");
+}
+
+readByAsync() async{
+  var path = '/Volumes/coder/Project/Flutter/flutter_journey/lib/day6/漫感.txt';
+  var result = await File(path).readAsString();
+  print(result);
+}
+```
+
+![](http://user-gold-cdn.xitu.io/2019/7/23/16c1d77b0bb72841?w=886&h=182&f=png&s=42961)
+
+---
+
+##### 2.4:同步读取文件
+>同步读取就像等着烧开水，完成再去做别的事，读取文件接收才能执行下一行代码
+
+![](http://user-gold-cdn.xitu.io/2019/7/23/16c1da2c115d47fb?w=1184&h=344&f=png&s=62852)
+
+```
+main() {
+  readBySync();
+  print("=======看看控制台，我是第在哪里?======");
+}
+
+readBySync() {
+  var path = '/Volumes/coder/Project/Flutter/flutter_journey/lib/day6/漫感.txt';
+  var result = File(path).readAsStringSync();
+  print(result);
+}
+```
+
+![](http://user-gold-cdn.xitu.io/2019/7/23/16c1da48bb0673b3?w=756&h=164&f=png&s=39133)
+
+
+---
+
+#### 3.Dart中的Stream流
+>Stream流也不是什么新鲜的玩意了，各大语言基本上都有流的操作，  
+这里就Dart中的Stream流进行详细的阐述。首先看Stream的几个创建方法
+
+```
+factory Stream.empty() = _EmptyStream<T>//创建一个空的流
+Stream.fromFuture(Future<T> future)//由一个Future对象创建
+Stream.fromFutures(Iterable<Future<T>> futures)//由多个Future对象创建
+Stream.fromIterable(Iterable<T> elements)//由可迭代对象创建
+Stream.periodic(Duration period,[T computation(int computationCount)])//有周期的流
+```
+
+---
+
+##### 3.1 : 最重要的一点！
+> 我觉得Stream的认知中最重要的是区别它和列表有什么不同,下面先亲身体验一下
+
+- `普通列表遍历`
+
+```
+var fishes = ["A", "B", "C"];
+fishes.forEach((e){
+  print(e);
+});
+print("====");
+---->[打印结果]----
+A
+B
+C
+====
+```
+
+- `流遍历`
+
+```
+void byStream() {
+  var fishes = ["A", "B", "C"];
+  var stream =Stream.fromIterable(fishes);
+  stream.forEach((e){
+    print(e);
+  });
+  print("====");
+}
+---->[打印结果]----
+====
+A
+B
+C
+```
+
+
+---
+
+##### 3.2:关于两者的解释
+
+>不知有心人是否看出两者的区别:Stream在遍历的时候居然是异步的，这就是它和列表最大的不同  
+一个List在遍历的那一刻，我就知道里面是什么，有多少元素，可以怎么这么操作它。   
+List就像后宫佳丽三千都在宫里等你随时操作，Stream则是后宫佳丽三千正在赶来的路上,你再急也没办法。  
+算了，换个例子,List就像鱼缸，里面盛着鱼，你知道鱼就在那，而且随时可以拿出来吃了  
+Stream像一条小溪，你只是知道里面的鱼在向你游来，在这一刻你不能捞出它们，  
+什么时候游到你这里也未知，对你而言它们都是你未来的财富。
+
+![](http://user-gold-cdn.xitu.io/2019/7/24/16c2203147374384?w=1446&h=304&f=png&s=112542)
+
+
+![](http://user-gold-cdn.xitu.io/2019/7/24/16c22087709d996a?w=1864&h=470&f=png&s=185493)
+
+- `话说这样有什么用 ` 
+>现在，邪恶的我在鱼游动的过程中偷偷给A下毒，然后未来你拿到A后吃掉就傻傻的死掉  
+这就是Stream中的元素到达目的地之前，都可以进行控制和操作，我黑你几条鱼你也不知道。
+
+![](http://user-gold-cdn.xitu.io/2019/7/24/16c220d05a38bf21?w=1900&h=506&f=png&s=212475)
+
+
+---
+
+##### 3.3:订阅:`listen`
+>也就是站在前面的你，在等待着鱼过来。说明你订阅了这个流中的元素。  
+在风平浪静，没人下毒的情况下，未来你一定能拿到河里向你游来的这三条鱼。
+
+```
+var fishes = ["A", "B", "C"];
+var stream =Stream.fromIterable(fishes);
+stream.listen((fish)=>print("拿到了$fish"));
+
+---->[打印结果]----
+拿到了A
+拿到了B
+拿到了C
+```
+
+- `订阅的回调`
+
+```
+var fishes = ["A", "B", "C"];
+var stream = Stream.fromIterable(fishes);
+stream.listen((fish) => print("拿到了$fish"),
+    onDone: () => print("已全部拿到"),//完成回调
+    onError: () => print("产生错误"),//错误回调
+    cancelOnError: false);//错误时是否取消订阅
+```
+
+---
+
+##### 3.4：订阅的取消
+>一旦订阅取消成功，onDone不会回调，即使你已经拿到了最后一条鱼  
+下面就说明你在拿到B后，你就取消订阅，走人
+
+```
+var fishes = ["A", "B", "C"];
+var stream = Stream.fromIterable(fishes);
+var you = stream.listen(null);//你订阅了这条小溪
+you.onData((fish){//声明鱼到达你那里你的行为
+  print("拿到了$fish");
+  if(fish=="B"){//拿到B后，你就取消订阅，走人
+    you.cancel();
+  }
+});
+you.onError((e)=>print("产生错误$e"));
+you.onDone(()=>print('已全部拿到'));
+```
+
+---
+
+
+##### 3.5:Stream流中的元素添加
+>里面就只有三条鱼，你感觉很不爽，这时善良的管理员说，我现在就给你加  
+StreamController中有一个stream对象，可以通过它进行流的操作  
+由于是异步的，可以在订阅后继续添加，也是不影响你对数据的获取  
+就像你订阅之后，管理员将鱼放在水里，鱼也会游到你的面前。
+
+![](http://user-gold-cdn.xitu.io/2019/7/24/16c223005864b565?w=2172&h=578&f=png&s=353842)
+
+
+```
+StreamController controller = StreamController();
+controller.add("A");
+controller.add("B");
+controller.add("C");
+
+controller.stream.listen((fish) => print("拿到了$fish"));
+
+controller.add("D");
+controller.add("E");
+controller.add("F");
+controller.close();
+```
+
+---
+
+##### 3.6:邪恶的我上线
+>邪恶的我来了，在中游截获一条条鱼。记住这幅图，Stream流的思想就差不多了。
+
+
+![](http://user-gold-cdn.xitu.io/2019/7/24/16c224ae62cf69c9?w=2228&h=586&f=png&s=375742)
+
+
+```
+StreamController controller = StreamController();
+controller.add("A");
+controller.add("B");
+controller.add("C");
+controller.stream
+    .map((fish) {//每条鱼都从我面前游过
+      if (fish == "C") {
+        print("我已经已经对C下毒");
+        return "中毒的C";
+      }
+      if(fish=="D"){
+        print("D已经被我吃完了");
+        return "D的骨头";
+      }
+      return fish;
+    })
+    .skip(2)//扔掉前两个
+    .take(2)//最终只能拿两个
+    .listen((fish) => print("傻傻的你拿到了$fish"));
+controller.add("D");
+controller.add("E");
+controller.add("F");
+controller.close();
+
+---->[打印结果]----
+我已经已经对C下毒
+傻傻的你拿到了中毒的C
+D已经被我吃完了
+傻傻的你拿到了D的骨头
+```
+
+---
+
+##### 3.7、你的朋友也来了
+>当鱼塘里加到B鱼之后，你朋友和你站在一起，也订阅了,这时候他只能监听到之后添加的。  
+使用broadcast方法可以让一个流被多人监听，否则异常:`Stream has already been listened to.`
+
+```
+StreamController<String> controller = StreamController<String>.broadcast();
+StreamSubscription you =
+    controller.stream.listen((value) => print('监听到 $value鱼游到你身边'));
+controller.sink.add("A");
+controller.sink.add("B");
+StreamSubscription youFriend =
+    controller.stream.listen((value) => print('监听到 $value鱼游到你朋友身边'));
+controller.sink.add("C");
+controller.sink.add("D");
+controller.close();
+```
+
+
+---
+
+
+#### 4.Dart的文件系统
+
+>在Dart中文件的顶层为FileSystemEntity抽象类，其下有三个孩子:  
+File接口，Directory接口，Link接口,其中三个各有一个私有类分别继承之
+
+![](http://user-gold-cdn.xitu.io/2019/7/23/16c1dda9c43b5fb8?w=1360&h=550&f=png&s=79118)
+
+
+##### 文件夹类Directory
+
+```
+---->[构造方法]----
+Directory(String path)//从路径
+Directory.fromUri(Uri uri)//从uri
+Directory.fromRawPath(Uint8List path)//从原生路径
+
+Uri get uri;
+Directory get current;
+Directory get absolute;
+
+---->[异步操作]----
+Future<Directory> create({bool recursive: false});//创建文件夹
+Future<Directory> createTemp([String prefix]);//创建临时文件夹
+Future<Directory> rename(String newPath);//重命名
+Stream<FileSystemEntity> list(//遍历
+    {bool recursive: false, bool followLinks: true});
+    
+---->[同步操作]----
+void createSync({bool recursive: false});
+Directory createTempSync([String prefix]);
+Directory renameSync(String newPath);
+Stream<FileSystemEntity> list(
+    {bool recursive: false, bool followLinks: true});
+```
+
+
+```
+var dir=Directory(path);
+print(dir.path);//Volumes/coder/Project/Flutter/flutter_journey/lib/day6/data
+print(Directory.current.path);//当前项目磁盘路径:/Volumes/coder/Project/Flutter/flutter_journey
+print(dir.absolute.path);//Volumes/coder/Project/Flutter/flutter_journey/lib/day6/data
+dir.createTemp("-");//随机创建自定义前缀的一个文件夹，
+
+dir.list(recursive: true).forEach((e){
+  print(e.path);
+}).then((v){
+  print("遍历完毕");
+});
+print("----");//验证list方法为异步
+```
+
+
+
+
+##### File基本操作的API
+
+- `文件操作相关`
+
+```
+---->[异步操作]----
+Future<File> create({bool recursive: false}); //异步创建一个文件(是否递归)
+Future<File> rename(String newPath);//异步重命名文件
+Future<File> copy(String newPath);//异步拷贝文件到新路径
+Future<RandomAccessFile> open({FileMode mode: FileMode.read});//异步打开文件
+
+---->[同步操作]----
+void createSync({bool recursive: false});//同步创建一个文件(是否递归)
+File renameSync(String newPath);//同步重命名文件
+File copySync(String newPath);//同步拷贝文件到新路径
+RandomAccessFile openSync({FileMode mode: FileMode.read});//同步打开文件
+```
+
+>不知简写成下面的样子大家可不可以接受，这是Future对象的链式调用  
+我们可以看到create返回的仍是一个Future<File>对象,也就是说then方法的回调值仍是File对象  
+你就可以继续调用相应的异步方法再进行then,再回调，再then,是不是很有趣。
+
+
+```
+var path =
+    '/Volumes/coder/Project/Flutter/flutter_journey/lib/day6/data/应龙.txt';
+var pathCopy =
+    '/Volumes/coder/Project/Flutter/flutter_journey/lib/day6/data/应龙-copy.txt';
+var pathRename =
+    '/Volumes/coder/Project/Flutter/flutter_journey/lib/day6/data/应龙-rename.txt';
+var file = File(path);
+file
+    .create(recursive: true)
+    .then((file) => file.copy(pathCopy)
+    .then((file) => file.rename(pathRename)
+    .then((file)=>print("创建，拷贝，重命名完毕"))));
+```
+
+---
+
+
+- `文件信息相关`
+
+>这一组没什么好说的，顾名思义，需要的时候知道有这些API就行了
+
+```
+---->[异步操作]----
+Future<int> length();//异步获取文件大小
+Future<DateTime> lastAccessed();//异步获取最后访问时间
+Future setLastAccessed(DateTime time);//异步设置最后访问时间
+Future<DateTime> lastModified();//异步获取最后修改时间
+Future setLastModified(DateTime time);//异步设置最后修改时间
+
+---->[同步操作]----
+int lengthSync();//同步获取文件大小
+DateTime lastAccessedSync();//同步获取最后访问时间
+void setLastAccessedSync(DateTime time);//同步设置最后访问时间
+DateTime lastModifiedSync();//同步获取最后修改时间
+void setLastModifiedSync(DateTime time);//异步设置最后修改时间
+
+File get absolute;//获取绝对文件
+String get path;//获取路径
+Directory get parent => new Directory(parentOf(path));//获取父文件
+```
+
+- `文件读写相关`
+>文件的读写可谓是重中之重
+
+```
+IOSink openWrite({FileMode mode: FileMode.write, Encoding encoding: utf8});
+---->[异步写操作]----
+Future<File> writeAsBytes(List<int> bytes,
+    {FileMode mode: FileMode.write, bool flush: false});
+Future<File> writeAsString(String contents,
+    {FileMode mode: FileMode.write,Encoding encoding: utf8,bool flush: false});
+
+---->[同步写操作]----
+void writeAsBytesSync(List<int> bytes,
+    {FileMode mode: FileMode.write, bool flush: false});
+void writeAsStringSync(String contents,
+    {FileMode mode: FileMode.write,Encoding encoding: utf8,bool flush: false});
+
+Stream<List<int>> openRead([int start, int end]);
+---->[异步读操作]----
+Future<List<int>> readAsBytes();
+Future<String> readAsString({Encoding encoding: utf8});
+Future<List<String>> readAsLines({Encoding encoding: utf8});
+
+---->[同步读操作]----
+List<int> readAsBytesSync();
+String readAsStringSync({Encoding encoding: utf8});
+List<String> readAsLinesSync({Encoding encoding: utf8});
+```
+
+
+
+---
+
+##### 文件的读写
+
+- `openWrite方法`  
+>其一，它返回了一个IOSink对象;其二，它就收模式和编码两个入参  
+这里测试了一下，它可以自动创建文件并写入字符，注意它并`不能自动创建文件夹`
+
+
+![](http://user-gold-cdn.xitu.io/2019/7/24/16c218b415b2e029?w=1310&h=368&f=png&s=84554)
+
+
+```
+var path =
+      '/Volumes/coder/Project/Flutter/flutter_journey/lib/day6/data/应龙-openWrite.txt';
+var file=File(path);
+file.openWrite().write("应龙");
+```
+
+>其中返回的IOSink对象有几个方法可以对不同的的类型进行写入，比如数组  
+在写入时可以自定义分隔符
+
+
+```
+var li=["Java","Dart","Kotlin","Swift"];
+file.openWrite().writeAll(li,"￥￥");
+
+---->[结果]----
+Java￥￥Dart￥￥Kotlin￥￥Swift
+```
+
+
+---
+
+
+- 关于读入模式
+>默认情况下是`FileMode.write`，名称写入都会先将原来的内容清空,除此之外，还有:
+
+
+```
+FileMode.write//打开可读写文件，会覆盖已有文件
+FileMode.append//打开可读写文件，往后追加
+FileMode.writeOnly//打开只写文件，会覆盖已有文件
+FileMode.writeOnlyAppend//打开只写文件，往后追加
+```
+
+---
+
+##### 文件的读操作
+> openRead返回一个Stream<List<int>>对象，它和Future比较像，有一个listen回调方法  
+它可以回调多个未来的对象的序列 ，你可以测试一下，它也是异步的   
+这里回调出的是一个List<int>，也就是对应的字节在码表中的数值集合。
+
+```
+var path =
+      '/Volumes/coder/Project/Flutter/flutter_journey/lib/day6/data/应龙-openRead.txt';
+file.openRead().listen((li) => li.forEach((e) => print(String.fromCharCode(e))));
+```
+
+
+>可以看到openRead方法中有两个不定参数，可以控制读取的起止点  
+至于为什么这样做:如果一个非常大的文件通过readAsString,那么会一次加载到内存中  
+如果内存不足就会崩掉,Stream就像是细水长流，一点一点进行读取。
+
+
+```
+var path =
+      '/Volumes/coder/Project/Flutter/flutter_journey/lib/day6/data/应龙-openRead.txt';
+file.openRead().listen((li) => li.forEach((e) => print(String.fromCharCode(e))));
+```
+
+>另外的一些方法，使用上都大同小异，就不赘述了。
+
+---
+
+
+##### 结语
+>本文到此接近尾声了，如果想快速尝鲜Flutter，[《Flutter七日》](https://juejin.im/post/5c1f358cf265da61223a54c7)会是你的必备佳品;如果想细细探究它,那就跟随我的脚步，完成一次Flutter之旅。  
+>另外本人有一个Flutter微信交流群，欢迎小伙伴加入，共同探讨Flutter的问题，本人微信号:`zdl1994328`，期待与你的交流与切磋。 
+
