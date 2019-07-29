@@ -1,6 +1,337 @@
-/*
- * main函数:入口
- */
+import 'dart:io';
+import 'dart:math';
+
+
+
+///
+/// main函数:入口
+///
+main() {
+//  print("hello world");//打印语句
+//  numberTest();//true
+//  stringTest();
+//  boolTest();
+//  listTest();
+//  setTest();
+//  mapTest();
+//  runesTest();
+
+//  symbolsTest();
+
+//  initVar();
+
+
+//op();
+
+//  print(
+//      add); //Closure: (dynamic, dynamic) => dynamic from Function 'add': static.
+//  print(add is Function); //true
+//
+//  Function square = (a) {//定义一个函数变量
+//    return a * a;
+//  };
+//
+//  print(addSimple(-3, 4, op: square)); //25
+//
+//
+//bigThan("String", "aaa");
+
+
+  List li = ["String", 10, true, [1, 2, 4]];
+
+
+//List<String> languageList =['Java', 'Dart', 'Kotlin'];
+//Map<String,int> markMap = {'Java':100, 'Dart':80, 'Kotlin':60};
+//Set<String> languageSet ={'Java', 'Dart','Kotlin'};
+
+//
+//var languageList = <String>['Java', 'Dart', 'Kotlin'];
+//var markMap = <String,int>{'Java':100, 'Dart':80, 'Kotlin':60};
+//var languageSet = <String>{'Java', 'Dart','Kotlin'};
+
+
+  heat();
+//  Water(0).heat().then((water) {
+//    print('水已经烧开,现在温度:${water.temperature},开始冲水');
+//  });
+  print("扫地");
+
+
+  print(str2Num("a"));//FormatException: a
+}
+
+//num str2Num(String str){
+//  return num.parse(str);
+//}
+
+//num str2Num(String str){
+//  var result= 0;
+//  try {
+//    result= num.parse(str);
+//  } catch (e) {
+//    print('发生异常：$e');
+//  } finally {
+//    print('最终会被执行的代码块');
+//  }
+//  return result;
+//}
+
+num str2Num(String str){
+  var result= 0;
+  try {
+    result= num.parse(str);
+  } on FormatException catch (e) {
+    print('发生Format异常：$e');
+  } on IOException catch(e){
+    print('发生IO异常：$e');
+  } finally {
+    print('最终会被执行的代码块');
+  }
+  return result;
+}
+
+heat() async {
+  var water = await Water(0).heat();
+  print('水已经烧开,现在温度:${water.temperature},开始冲水');
+  return water;
+}
+
+class Water {
+  double temperature;
+
+  Water(this.temperature);
+
+  Future<Water> heat() {
+    print("打开烧水开关");
+    return Future<Water>(() {
+      sleep(Duration(seconds: 3)); //模拟烧水过程(耗时操作)
+      temperature = 100;
+      return this;
+    });
+  }
+}
+
+
+/// 先使用[op]对[a],[b]进行操作，再将结果相加
+num add(num a, num b, {Function op}) {
+  return op(a) + op(b);
+}
+
+
+/// 先使用[op]对[a],[b]进行操作，再将结果相加
+addSimple(a, b, {op}) => op(a) + op(b);
+
+bigThan(Comparable a, Comparable b) {
+  return a.compareTo(b);
+}
+
+
+op() {
+  print(1 + 2); //3    加
+  print(1 - 2); //-1   减
+  print(1 * 2); //2    乘
+  print(1 / 2); //0.5  除
+  print(10 % 3); //1   余
+  print(10 ~/ 3); //3  商
+
+
+//  ---->[情况1：i++]----
+//  int i=3;
+//  var a=i++;//执行赋值后i才自加,故a=3
+//  print('a=$a,i=$i');//a=3,i=4
+//
+//  ---->[情况2：++i]----
+//  int i=3;
+//  var a=++i;//执行赋值前i已经自加,故a=4
+//  print('a=$a,i=$i');//a=4,i=4
+//
+//  ---->[情况3：i--]----
+//  int i=3;
+//  var a=i--;//执行赋值后i才自减,故a=3
+//  print('a=$a,i=$i');//a=3,i=2
+//
+//  ---->[情况4：--i]----
+//  int i=3;
+//  var a=--i;//执行赋值前i已经自减,故a=2
+//  print('a=$a,i=$i');//a=2,i=2
+
+
+//  print(1 > 2); //false   大于
+//  print(1 < 2); //true    小于
+//  print(1 == 2); //false  等于
+//  print(1 != 2); //true   不等
+//  print(10 >= 3); //true  大于等于
+//  print(10 <= 3); //false 小于等于
+
+//  ---->[情况1：b值为null]----
+//  var a = 20;
+//  var b;
+//  b ??= a;
+//  print(b);//20
+
+//  ---->[情况2：b值不为null]----
+//  var a = 20;
+//  var b = 2;
+//  b ??= a;
+//  print(b);//2
+
+  var height = 130;
+  var pay = (height > 120) ? 200 : 100;
+  print(pay); //200
+
+//  ---->[情况1：b值为null]----
+//  var a = 20;
+//  var b;
+//  var c=b ?? a++;
+//  print('a=$a,c=$c');//a=21,c=20
+
+//  ---->[情况1：b值为null]----
+//  var a = 20;
+//  var b = 2;
+//  var c = b ?? a++;
+//  print('a=$a,c=$c'); //a=20,c=2
+
+//  位与:&  两个都是1为1    位或:|     只要有1就是1
+//  位非:~  全取反          位都不一样为1
+//  左位移：<<              右位移：>>
+//
+//  例子：c = a & b
+//  0000 0000 0000 0000 0000 0110 1010 1001  [a]   0x000006a9  1705
+//  &  0000 0000 0000 0000 0100 0100 1011 0101  [b]   0x000044b5  17589
+//  ---------------------------
+//  0000 0000 0000 0000 0000 0100 1010 0001  [c]   0x000004a1  1185
+//
+//  例子：d = a | b
+//  0000 0000 0000 0000 0000 0110 1010 1001  [a]   0x000006a9  1705
+//  |  0000 0000 0000 0000 0100 0100 1011 0101  [b]   0x000044b5  17589
+//  ---------------------------
+//  0000 0000 0000 0000 0100 0110 1011 1101  [d]   0x000046bd  18109
+//
+//  例子：e = ~a
+//  0000 0000 0000 0000 0000 0110 1010 1001  [a]   0x000006a9  1705
+//  ~
+//  1111 1111 1111 1111 1111 1001 0101 0110  [e]   0xfffff956  -1706
+//
+//  例子：f = a ^ b
+//  0000 0000 0000 0000 0000 0110 1010 1001  [a]   0x000006a9  1705
+//  ^  0000 0000 0000 0000 0100 0100 1011 0101  [b]   0x000044b5  17589
+//  ---------------------------
+//  0000 0000 0000 0000 0100 0010 0001 1100  [f]   0x0000421c  16924
+//
+//  例子：g = a << 4
+//  0000 0000 0000 0000 0000 0110 1010 1001  [a]   0x000006a9  1705
+//  0000 0000 0000 0000 0000 0110 1010 1001  <---移位
+//  0000 0000 0000 0000 0110 1010 1001 0000  [g]   0x00006a90  27280=1705*2^4
+//
+//  例子：h = a >> 4
+//  0000 0000 0000 0000 0000 0110 1010 1001  [a]   0x000006a9  1705
+//  0000 0000 0000 0000 0000 0110 1010 1001  <---移位
+//  0000 0000 0000 0000 0000 0000 0110 1010  [g]   0x0000006a  27280=106
+
+  var random = Random();
+  for (var i = 0; i < 100; i++) {
+    print(random.nextInt(9));
+  }
+}
+
+bool enter(int age, int height, bool isMan) {
+  return (age > 18 || height > 140) && !isMan;
+}
+
+void initVar() {
+  var age = 18;
+  var isMan = true;
+  var name = '张风捷特烈';
+  var languages = ['Java', 'Dart', 'Python', 'C++', 'Kotlin'];
+  var languages2 = {'Java', 'Dart', 'Python', 'C++', 'Kotlin', "Java"};
+  var map = {1: 'one', 2: 'two', 3: 'three'};
+  var className = #Person;
+
+  var who;
+  who = "what";
+  print(who is String); //true
+  who = 10;
+  print(who is int); //true
+
+  //  var who="what";
+  //  print(who is String);//true
+  //  who=10;//此处报错
+  //  print(who is int);//true
+
+  //  final PI = 3.14159265;//final定义常量
+  //  PI=4;// ERROR: 'PI', a final variable, can only be set once.
+  //
+  //  const Pi  = 3.14159265;//const定义常量
+  //  Pi=4;// ERROR: Constant variables can't be assigned a value.
+  //
+  //  final f = DateTime.now(); // OK
+  //  const c = DateTime.now(); // ERROR
+  //  //Const variables must be initialized with a constant value.
+}
+
+symbolsTest() {
+  Symbol className = #Person;
+  print(className); //Symbol("Person")
+//  MirrorSystem.getName(className);
+}
+
+runesTest() {
+  String dart = "Dart";
+  print(dart.codeUnits); //[68, 97, 114, 116]
+  String evil = '\u{1f47f}';
+  print(evil); //👿
+  print(evil.codeUnits); //[55357, 56447]
+
+
+  String emojis = '\u{1f47f}\u{1f47a}\u{1f47b}';
+  print(emojis); //👿👺👻
+  print(emojis.codeUnits); //[55357, 56447, 55357, 56442, 55357, 56443]
+  print(emojis.runes); //(128127, 128122, 128123)
+
+  Runes input = Runes(
+      '\u2695\u{1f47a}\u{1f34b}\u2653\u{1f46d}\u{1f34e}\u2694\u{1f470}\u{1f349}');
+  print(
+      input); //(9877, 128127, 127823, 9861, 128111, 127823, 9877, 128127, 127823)
+  print(String.fromCharCodes(input)); //⚕👺🍋♓👭🍎⚔👰🍉
+  print(String.fromCharCodes(input.map((e) {
+    return e - 15;
+  }))); //⚆👫🌼♄👞🌿⚅👡🌺
+}
+
+void mapTest() {
+  //创建映射表
+  Map<String, num> dict = {"a": 1, "b": 30, "c": 70, "price": 40.0};
+  print(dict); //{a: 1, b: 30, c: 70, price: 40.0}
+  print(dict["price"]); //40.0
+  dict["a"] = 2; //修改
+  print(dict); //{a: 2, b: 30, c: 70, price: 40.0}
+  print(dict.containsKey("price")); //true 是否包含键
+  print(dict.containsValue("price")); //false 是否包含值
+  print(dict.isEmpty); //false 是否为空
+  print(dict.isNotEmpty); //true 是否不为空
+  print(dict.length); //4 长度
+  dict.remove("c"); //移除
+  print(dict); //{a: 2, b: 30, price: 40.0}
+  print(dict.keys.toList()); //[a, b, price] 将键转为数组
+  print(dict.values.toList()); //[2, 30, 40.0] 将值转为数组
+}
+
+void setTest() {
+  Set<String> languages = {'Java', 'Dart', 'Python', 'C++', 'Kotlin', "Java"};
+  print(languages); //{Java, Dart, Python, C++, Kotlin}
+  print(languages.add('Java')); //false 表示添加不成功
+  print(languages.add('JavaScript')); //true
+  print(languages.contains("Dart")); //true 是否存在
+  languages.remove("JavaScript");
+  print(languages.toList()); //[Java, Dart, Python, C++, Kotlin] 列表化
+  languages.forEach((e) { //遍历
+    print(e);
+  });
+  print({1, 2, 3, 4}.difference({2, 3, 6})); //{1, 4} 不同于
+  print({1, 2, 3, 4}.union({2, 3, 6})); //{1, 2, 3, 4, 6} 并集
+  print({1, 2, 3, 4}.intersection({2, 3, 6})); //{2, 3} 交集
+
+}
 
 
 void listTest() {
@@ -23,36 +354,20 @@ void listTest() {
 
   var nums = [3, 2, 1, 4, 5];
   nums.sort();
-  print(nums); //排序--[1, 2, 3, 4, 5]
-
+  print(nums); //[1, 2, 3, 4, 5] 排序
   for (var value in nums) {
     print(value); //1,2,3,4,5
   }
-
   nums.forEach((num) => num + 1); //2,3,4,5,6
-
   var any = nums.any((num) => num > 3);
   print(any); //只要有>3的任何元素,返回true
-
   var every = nums.every((num) => num < 6);
   print(every); //全部元素<6,返回true
-
   var listX5 = nums.map((e) => e *= 5);
   print(listX5); //(5, 10, 15, 20, 25)
 }
 
 
-
-///
-/// main函数:入口
-///
-main(){
-//  print("hello world");//打印语句
-//  numberTest();//true
-//  stringTest();
-//  boolTest();
-  listTest();
-}
 
 void stringTest() {
   String name = '张风捷特烈'; //支持单引号
