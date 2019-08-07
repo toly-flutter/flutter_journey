@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
-import 'day2/grammar_view.dart';
+import 'toly_widget/user_panel.dart';
 
 
+//var show=CustomPaint(painter: GrammarView(),);
 
 
 var scaffold = Scaffold(
   appBar: AppBar(
     title: Text('Flutter之旅'),
   ),
-  body: CustomPaint(painter: GrammarView(),),
+  body: show,
 );
 
 var app = MaterialApp(
@@ -21,3 +22,6 @@ var app = MaterialApp(
 );
 
 void main() => runApp(app);
+
+
+
