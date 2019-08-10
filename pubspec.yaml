@@ -47,11 +47,20 @@ flutter:
     - images/icon_head.png
     - images/honor.png
     - images/wy_200x300.jpg
+    - images/wy_300x200.jpg
+    - images/wy_300x200_filter.jpg
+    - images/icon_flutter.png
+    - images/icon_wwx.png
+    - images/icon_ylm.png
+    - images/icon_lwj.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
-
+  fonts:
+    - family: TolyIcon
+      fonts:
+        - asset: iconfont/iconfont.ttf
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
 
