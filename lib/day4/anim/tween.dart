@@ -114,11 +114,8 @@ class Star {
 class StarPainter extends CustomPainter {
   Star _star;
   Paint _paint;
-  Path _starPath;
-
   StarPainter(this._star) {
     _paint = Paint();
-    _starPath = Path();
   }
 
   @override
@@ -138,7 +135,6 @@ class StarPainter extends CustomPainter {
   void _drawStar(Canvas canvas, Star star) {
     canvas.drawPath(
         nStarPath(
-          _starPath,
           star.num,
           star.R,
           star.r,

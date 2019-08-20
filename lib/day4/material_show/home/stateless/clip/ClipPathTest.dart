@@ -19,7 +19,7 @@ class StarClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
 
-    return nStarPath(Path(),8, 25, 20, dx: 25, dy: 25);
+    return nStarPath(8, 25, 20, dx: 25, dy: 25);
   }
 
   @override

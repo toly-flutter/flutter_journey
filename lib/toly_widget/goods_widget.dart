@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 typedef TapCallback = void Function(GoodBean bean);
 
 class GoodBean {
-  String caverUrl; //封面图链接
+  ImageProvider image ; //封面图
   String title; //链接
   double price; //价格
   int saleCount; //销售数
-  GoodBean({this.caverUrl, this.title, this.price, this.saleCount});
+  GoodBean({this.image, this.title, this.price, this.saleCount});
 }
 
 class GoodsWidget extends StatelessWidget {
@@ -22,7 +22,7 @@ class GoodsWidget extends StatelessWidget {
     var top = ClipRRect(
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(4), topRight: Radius.circular(4)),
-      child: Image.network(goods.caverUrl),
+      child: Image(image: goods.image,fit: BoxFit.cover,),
     );
 
     var center = Text(
@@ -106,6 +106,5 @@ var show = GoodsWidget(
       price: 21.89,
       saleCount: 99,
       title: "得力笔记本文具商务复古25K/A5记事本PU软皮面日记本子定制可印logo简约工作笔记本会议记录本小清新大学生用",
-      caverUrl:
-          "https://img.alicdn.com/imgextra/i3/108452043/O1CN01IMPSxR1QxjhmdZLXA_!!0-saturn_solar.jpg_220x220.jpg_.webp"),
-);
+      image:AssetImage("images/note_cover.jpg"),
+));

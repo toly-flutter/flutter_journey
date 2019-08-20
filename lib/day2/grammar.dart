@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:path_provider/path_provider.dart';
-
 ///
 /// main函数:入口
 ///
@@ -50,14 +48,28 @@ main() {
 //var languageSet = <String>{'Java', 'Dart','Kotlin'};
 
 
-  heat();
-//  Water(0).heat().then((water) {
-//    print('水已经烧开,现在温度:${water.temperature},开始冲水');
-//  });
-  print("扫地");
+//  heat();
+////  Water(0).heat().then((water) {
+////    print('水已经烧开,现在温度:${water.temperature},开始冲水');
+////  });
+//  print("扫地");
+//
+//
+//  print(str2Num("a"));//FormatException: a
 
+var toly=Person("toly");
+var temp=toly;
+var winy=Person("winy");
+print(toly==winy);
+toly.name="king-toly";
+print(temp==toly);//true
+}
 
-  print(str2Num("a"));//FormatException: a
+class Person{
+  String  name;
+
+  Person(this.name);
+
 }
 
 //num str2Num(String str){

@@ -11,7 +11,8 @@ import 'dart:ui';
  * @return n角星路径
  */
 /// 获得一个[num]角星，外接圆半径为[R],内接圆半径为[r],位移偏移[dx],[dy]的路径
-Path nStarPath(Path path,int num, double R, double r, {dx = 0, dy = 0}) {
+Path nStarPath(int num, double R, double r, {dx = 0, dy = 0}) {
+  var path=Path();
   double perDeg = 360 / num; //尖角的度数
   double degA = perDeg / 2 / 2;
   double degB = 360 / (num - 1) / 2 - degA / 2 + degA;

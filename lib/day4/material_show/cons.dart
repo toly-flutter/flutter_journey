@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../iconfont.dart';
 
 class Cons{
-  static const TABS = <String>["Stateful", "Stateless", "Dialog","nav&Bar",]; //标题列表
+  static const TABS = <String>["Stateful", "Stateless", "Dialog","nav&Bar"]; //标题列表
   static const  ICONS_MAP = {
     "首页": Icons.home,
     "动态":Icons.toys,

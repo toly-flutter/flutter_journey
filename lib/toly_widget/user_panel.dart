@@ -195,12 +195,21 @@ class User {
   String company; //公司
   String proverbs; //箴言
   User(
-      {this.name,
-      this.lever,
+      {this.name="",
+      this.lever=0,
       this.image,
-      this.position,
-      this.company,
-      this.proverbs});
+      this.position="",
+      this.company="",
+      this.proverbs=""});
+
+  User.fromMap(Map<String,dynamic> json){
+    name=json["name"]??json["login"]??"未知";
+    lever=json["public_repos"]??"未知";
+    position=json["location"]??"未知";
+    company=json["company"]??"未知";
+    proverbs=json["bio"]??"不想告诉你";
+    image=NetworkImage(json["avatar_url"]);
+  }
 }
 
 var show = UserPanel(
