@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_journey/day6/life/life_page.dart';
 
-import 'day6/first_demo/my_app_state_life.dart';
+import 'package:flutter_journey/day8/redux/my_app_redux.dart';
+
 
 
 ////var show=CustomPaint(painter: GrammarView(),);
@@ -35,6 +35,7 @@ import 'day6/first_demo/my_app_state_life.dart';
 //void main() => runApp(app);
 //void main() => runApp(CupertinoPage());
 //void main() => runApp(App());
-void main() => runApp(LifePage());
+//void main() => runApp(LifePage());
 //void main() => runApp(MyApp());
+void main() => runApp(MyApp());
 
