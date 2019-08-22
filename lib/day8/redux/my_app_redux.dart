@@ -104,11 +104,20 @@ class PanelWidget extends StatelessWidget {
 class CounterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var countText = StoreConnector<CountState, int>(
-      converter: (store) => store.state.count, //转换器，获取仓库，从仓库拿值
-      builder: (context, count) {//构造器，构建Widget
+//    var countText = StoreConnector<CountState, int>(
+//      converter: (store) => store.state.count, //转换器，获取仓库，从仓库拿值
+//      builder: (context, count) {//构造器，构建Widget
+//        return Text(
+//          '$count',
+//          style: Theme.of(context).textTheme.display1,
+//        );
+//      },
+//    );
+
+    var countText = StoreBuilder<CountState>(
+      builder: (context, store) {//构造器，构建Widget
         return Text(
-          '$count',
+          '${store.state.count}',
           style: Theme.of(context).textTheme.display1,
         );
       },

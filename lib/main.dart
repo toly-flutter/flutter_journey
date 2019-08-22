@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_journey/day8/redux/my_app_redux.dart';
+import 'package:flutter_journey/day8/redux/theam_i18n/index.dart';
 
 
 
@@ -37,5 +38,5 @@ import 'package:flutter_journey/day8/redux/my_app_redux.dart';
 //void main() => runApp(App());
 //void main() => runApp(LifePage());
 //void main() => runApp(MyApp());
-void main() => runApp(MyApp());
+void main() => runApp(SwitchThemeRedux());
 
