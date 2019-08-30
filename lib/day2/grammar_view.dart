@@ -8,7 +8,6 @@ class GrammarView extends CustomPainter {
   GrammarView() {
     mPaint = Paint(); //创建画笔对象
     mPath=Path();
-//    Animatable
     mPaint.isAntiAlias = true; //抗锯齿
     mPaint.style = PaintingStyle.stroke; //线条
     mPaint.strokeWidth = 2; //线条粗细
@@ -29,48 +28,6 @@ class GrammarView extends CustomPainter {
 //    ..color = Color(0xffBBC3C5) //画笔颜色
 //    ..isAntiAlias = true //抗锯齿
 //    ..filterQuality = FilterQuality.high;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   }
 
   @override
@@ -119,7 +76,7 @@ class GrammarView extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     // 是否应该重新绘制
-    return true;
+    return false;
   }
 }
 

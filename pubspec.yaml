@@ -1,5 +1,5 @@
-name: flutter_journey
-description: A new Flutter application.
+name: flutter_journey #项目名
+description: A new Flutter application. #项目描述
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -11,29 +11,31 @@ description: A new Flutter application.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.0+1 #项目版本
 
-environment:
-  sdk: ">=2.1.0 <3.0.0"
+environment: #环境配置
+  sdk: ">=2.1.0 <3.0.0" # Dart sdk 版本
 
-dependencies:
-  flutter:
+dependencies: # 库依赖
+  flutter: #依赖flutter库
     sdk: flutter
+  cupertino_icons: ^0.1.2 #依赖cupertino风格图标库
   sqflite: ^1.1.6+3
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
   path_provider: ^1.2.0
   provider: ^3.1.0
   flutter_bloc: ^0.21.0
   http: ^0.12.0+2
   flutter_redux: ^0.5.3
+  audioplayers: ^0.13.1
+  video_player: ^0.10.2
+  camera: ^0.5.4
+  image_picker: ^0.6.1+4
+  webview_flutter: ^0.3.13
   flutter_localizations:
     sdk: flutter
-dev_dependencies:
+dev_dependencies: #开发环境的依赖库:不会被用到生产环境
   flutter_test:
     sdk: flutter
-
 
 
 # For information on the generic Dart part of this file, see the
@@ -45,10 +47,10 @@ flutter:
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
-  uses-material-design: true
+  uses-material-design: true #使用Material图标
 
   # To add assets to your application, add an assets section, like this:
-  assets:
+  assets: #配置资源，- 资源的路径，可以是图片和json，音视频等文件
     - images/mani.jpg
     - images/canvas.jpg
     - images/sabar.jpg
@@ -59,6 +61,9 @@ flutter:
     - images/wy_300x200.jpg
     - images/wy_300x200_filter.jpg
     - images/icon_flutter.png
+    - images/2.0x/icon_flutter.png
+    - images/3.0x/icon_flutter.png
+    - images/caver.jpeg
     - images/icon_wwx.png
     - images/icon_ylm.png
     - images/icon_lwj.png
@@ -66,8 +71,12 @@ flutter:
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
-  fonts:
-    - family: TolyIcon
-      fonts:
+  fonts: # 配置字体，可配置多个，之城ttf和otf
+    - family: TolyIcon #字体名
+      fonts: # 字体文件
         - asset: iconfont/iconfont.ttf
-  
+    - family: 阿里惠普体 #字体名
+      fonts:
+        - asset: font/Alibaba-PuHuiTi-Medium.otf
+          style: italic #默认样式
+          weight: 700 #默认字重

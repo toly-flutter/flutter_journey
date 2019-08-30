@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_journey/day8/redux/my_app_redux.dart';
-import 'package:flutter_journey/day8/redux/theam_i18n/index.dart';
+import 'day9/redux/theme_i18n/index.dart';
+
+//import 'day4/view_pager/slide_pager_auto_paly.dart';
+
+
 
 
 
@@ -16,27 +19,39 @@ import 'package:flutter_journey/day8/redux/theam_i18n/index.dart';
 //var centerShow = Align(alignment: Alignment.center,
 //    child: show);
 
+
 //var scaffold = Scaffold(
 //  appBar: AppBar(
 //    title: Text('Flutter之旅'),
 //  ),
-//  body: RedPage(),
-//);
-//
-//var app = MaterialApp(
-//  title: 'Flutter Demo',
-//  theme: ThemeData(
-//    primarySwatch: Colors.blue,
-//  ),
-//  home: Scaffold(
-//      body: Center(
-//        child:SwapText(),))
+//  body: SlidePage(
+//    onPageChanged: (page){
+//      print(page);
+//    },
+//    onClick: (index){
+//      print(index);
+//    },
+//    config: PageConfig(
+//      autoPlay: true
+//    ),
+//    children: List.generate(10, (i) => "images/wy_300x200.jpg").map((e) =>
+//        Card(child: Image.asset(e, fit: BoxFit.cover,),)).toList(),),
 //);
 
-//void main() => runApp(app);
+
+//var app = MaterialApp(
+//
+//    title: 'Flutter Demo',
+//    theme: ThemeData(
+//      primarySwatch: Colors.blue,
+//    ),
+//    home: scaffold
+//);
+
+
 //void main() => runApp(CupertinoPage());
-//void main() => runApp(App());
+void main() => runApp(SwitchThemeRedux());
 //void main() => runApp(LifePage());
 //void main() => runApp(MyApp());
-void main() => runApp(SwitchThemeRedux());
+//void main() => runApp(MyMaterialApp());
 

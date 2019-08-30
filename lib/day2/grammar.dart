@@ -57,13 +57,40 @@ main() {
 //
 //  print(str2Num("a"));//FormatException: a
 
-var toly=Person("toly");
-var temp=toly;
-var winy=Person("winy");
-print(toly==winy);
-toly.name="king-toly";
-print(temp==toly);//true
+//var toly=Person("toly");
+//var temp=toly;
+//var winy=Person("winy");
+//print(toly==winy);
+//toly.name="king-toly";
+//print(temp==toly);//true
+
+//  String color="0xffee4400";
+//  var a= "0x${color.substring(2,4)}";//255
+//  var r= "0x${color.substring(4,6)}";//255
+//  var g= "0x${color.substring(6,8)}";//255
+//  var b= "0x${color.substring(8,10)}";//255
+//  print(int.parse(a));//255
+//  print(int.parse(r));//255
+//  print(int.parse(g));//255
+//  print(int.parse(b));//255
+
+ var date= DateTime.fromMillisecondsSinceEpoch(1566544720243);
+  DateTime.fromMillisecondsSinceEpoch(1566544720243);
+  print('${date.year}-${date.month}-${date.day}');
+  print(date.toString().split(" ")[0]);
+  print(date.toString().split(" ")[1].split(".")[0]);
+
+  var a=DateTime.now().millisecondsSinceEpoch-1566544720243;
+  var hour=a/1000/60/60;
+  var second=(hour-hour.floor())*60;
+
+  var minus=((second-second.floor())*60).round();
+  print("${hour.floor()}:${second.floor()}:$minus");
+  print(DateTime.now());
 }
+
+
+
 
 class Person{
   String  name;

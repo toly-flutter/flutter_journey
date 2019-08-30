@@ -5,7 +5,7 @@ class GridLine extends CustomPainter {
   Paint mPaint; //画笔对象
 
   GridLine(this.context) {
-    //在工作方法中传入BuildContext对象
+    //在构造方法中传入BuildContext对象
     mPaint = Paint(); //创建画笔对象
     mPaint.style = PaintingStyle.stroke; //画线条
     mPaint.color = Color(0xffBBC3C5); //画笔颜色
@@ -22,7 +22,7 @@ class GridLine extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     // 是否应该重新绘制
-    return true;
+    return false;
   }
 }
 

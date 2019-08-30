@@ -26,12 +26,14 @@ class MultiShower extends StatelessWidget {
           i++;
           return  Column(
                 children: <Widget>[
-                  Container(
-                      margin: EdgeInsets.all(5),
-                      color: color,
-                      width: width,
-                      height: height,
-                      child: call(list[i])),
+                  Card(
+                    child: Container(
+                        margin: EdgeInsets.all(5),
+                        color: color,
+                        width: width,
+                        height: height,
+                        child: call(list[i])),
+                  ),
                   Padding(
                       padding: EdgeInsets.only(bottom: 3),
                       child: Text(infos != null
@@ -42,7 +44,7 @@ class MultiShower extends StatelessWidget {
         }).toList(),
       ),
     );
-    return item;
+    return SingleChildScrollView(child: item);
   }
 }
 
